@@ -1,0 +1,90 @@
+{% load static %}
+{% load carstag %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{title}}</title>
+    <link type="text/css" href="{% static 'cars/css/styles.css' %}" rel="stylesheet"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="shortcut icon" href="{% static 'cars/images/main.ico' %}" type="image/x-icon"/>
+    <meta name="viewport" content="width=device-width, initial-scale=0, user-scalable=no, width=950px">
+</head>
+<body>
+
+<header>
+    {% block mainmenu %}
+    <a class="logo" href="{% url 'home' %}"><img src="{% static 'cars/images/logo.png' %}"></a>
+
+    <ul class="main-menu">
+        {% for m in mainmenu %}
+        <li><a href="{% url m.url_name %}">{{m.title}}</a></li>
+        {% endfor %}
+    </ul>
+
+    <div>
+        {% if user.is_authenticated %}
+        <a class="app-link" href="{% url 'users:profile' %}">{{user.username}}</a> | <a class="app-link" href="{% url 'users:logout' %}">Выйти</a>
+        {% else %}
+        <a class="app-link" href="{% url 'users:login' %}">Войти</a> | <a class="app-link" href="{% url 'users:register' %}">Регистрация</a>
+        {% endif %}
+    </div>
+    {% endblock mainmenu %}
+</header>
+
+<main>
+    <div class="sidebar">
+        <ul class="categories-list">
+            {% if cat_selected == 0 %}
+            <li class="selected">
+                <img src="{% static 'cars/images/cars.png' %}">
+                <span>Все категории</span>
+            </li>
+            {% else %}
+            <li>
+                <a href="{% url 'home' %}">
+                    <img src="{% static 'cars/images/cars.png' %}">
+                    <span>Все категории</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% show_categories cat_selected %}
+        </ul>
+
+        <div class="line"></div>
+
+        {% show_all_tags %}
+
+        <div class="line"></div>
+
+        <div class="share">
+            <p>Наш канал</p>
+            <a class="share-yt" href="https://www.youtube.com" target="_blank" rel="nofollow">
+                <img src="{% static 'cars/images/yt-logo.png' %}">
+            </a>
+        </div>
+    </div>
+    <div class="content-wrapper">
+
+        <div class="content">
+            {% block breadcrumbs %}
+            {% endblock %}
+
+            <div class="content-text">
+                {% block content %}
+                {% endblock %}
+            </div>
+
+            {% block navigation %}
+            {% endblock %}
+        </div>
+
+        <footer>
+            <p>&copy; 2024 Electrocar</p>
+        </footer>
+    </div>
+
+</main>
+
+</body>
+</html>

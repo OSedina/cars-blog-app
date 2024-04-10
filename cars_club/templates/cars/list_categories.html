@@ -1,0 +1,17 @@
+{% load static %}
+
+{% for cat in cats %}
+{% if cat.id == cat_selected %}
+<li class="selected">
+    <img src="{% static 'cars/images/car.png' %}">
+    <span>{{cat.name}}</span>
+</li>
+{% else %}
+<li>
+    <a href="{{ cat.get_absolute_url }}">
+        <img src="{% static 'cars/images/car.png' %}">
+        <span>{{cat.name}}</span>
+    </a>
+</li>
+{% endif %}
+{% endfor %}
